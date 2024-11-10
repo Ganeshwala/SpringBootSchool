@@ -6,6 +6,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -17,7 +18,7 @@ public class ProjectSecurityConfig {
 		httpSecurity
 		.csrf(csrf->csrf.disable())
 		.authorizeHttpRequests(
-				request -> request.requestMatchers("/dashborad").authenticated()
+				request -> request.requestMatchers("/dashboard").authenticated()
 				.requestMatchers("/","/home").permitAll()
 				.requestMatchers("/contact").permitAll()
 				.requestMatchers("/courses").permitAll()
@@ -35,18 +36,17 @@ public class ProjectSecurityConfig {
 	}
 	
 	@Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("12345")
-                .roles("USER")
-                .build();
-        UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("54321")
-                .roles("USER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
-    }
+	public UserDetailsService users() {
+		UserDetails user = User.builder()
+			.username("user")
+			.password("12345")
+			.roles("USER")
+			.build();
+		UserDetails admin = User.builder()
+			.username("admin")
+			.password("54321")
+			.roles("USER", "ADMIN")
+			.build();
+		return new InMemoryUserDetailsManager(user, admin);
+	}
 }

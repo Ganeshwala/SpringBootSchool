@@ -54,7 +54,7 @@ public class ContactController {
 		log.info("Email "+contact.getEmail());
 		log.info("Subject "+ contact.getSubject());
 		log.info("Message "+contact.getMessage());
-		contactService.saveContactMessage(contact);
+		contactService.saveMessageDetails(contact);
 		return "redirect:/contact";
 	}
 }
